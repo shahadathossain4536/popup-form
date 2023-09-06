@@ -40,11 +40,11 @@ const PopupForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg  shadow-2xl shadow-gray-950">
+    <div className="bg-white">
       
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-6">
-          <label htmlFor="name" className="block  font-light text-xl mb-1 text-black">
+          <label htmlFor="name" className="block  font-light mb-1 text-black">
             Name
           </label>
           <input
@@ -61,7 +61,7 @@ const PopupForm = () => {
           )}
         </div>
         <div className="mb-6">
-          <label htmlFor="email" className="block font-light text-xl mb-1 text-black">
+          <label htmlFor="email" className="block font-light mb-1 text-black">
             Email
           </label>
           <input
@@ -78,7 +78,7 @@ const PopupForm = () => {
           )}
         </div>
         <div className="mb-6">
-          <label htmlFor="phoneNumber" className="block font-light text-xl mb-1 text-black">
+          <label htmlFor="phoneNumber" className="block font-light  mb-1 text-black">
             Phone Number
           </label>
           <input
@@ -106,14 +106,14 @@ const PopupForm = () => {
               errors.consent ? 'border-red-500' : 'border-gray-300'
             }`}
           />
-          <span className='text-black'>I agree to the terms and conditions.</span>
+          <span className='text-black text-sm'>I agree to the terms and conditions.</span>
           {errors.consent && (
             <p className="text-red-500 text-sm">Consent is required</p>
           )}
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white text-lg py-2 px-4  rounded-md hover:bg-blue-600 w-full mt-4"
+          className="bg-blue-500 text-white py-2 px-4  rounded-md hover:bg-blue-600 w-full"
         >
           Submit
         </button>
