@@ -43,7 +43,7 @@ const PopupForm = () => {
     <div className="bg-white">
       
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-6">
+        <div className="mb-2">
           <label htmlFor="name" className="block  font-light mb-1 text-black">
             Name
           </label>
@@ -60,7 +60,7 @@ const PopupForm = () => {
             <p className="text-red-500 text-sm">Name is required</p>
           )}
         </div>
-        <div className="mb-6">
+        <div className="mb-2">
           <label htmlFor="email" className="block font-light mb-1 text-black">
             Email
           </label>
@@ -77,7 +77,7 @@ const PopupForm = () => {
             <p className="text-red-500 text-sm">Email is required</p>
           )}
         </div>
-        <div className="mb-6">
+        <div className="mb-2">
           <label htmlFor="phoneNumber" className="block font-light  mb-1 text-black">
             Phone Number
           </label>
@@ -94,7 +94,7 @@ const PopupForm = () => {
             <p className="text-red-500 text-sm">Phone number is required</p>
           )}
         </div>
-        <div className="mb-4">
+        <div className="mb-2">
           {/* <label htmlFor="consent" className="block font-semibold mb-1">
             Notice and Consent
           </label> */}
