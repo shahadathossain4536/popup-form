@@ -1,6 +1,7 @@
 "use client";
 // components/PopupForm.tsx
 
+import axios from 'axios';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState, useEffect } from "react";
 
@@ -25,37 +26,38 @@ const PopupForm = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/submitForm", {
-        method: "POST",
+      console.log("data", data);
+  
+      const response = await axios.post("/api/submitForm", data, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
       });
   
       if (response.status === 200) {
         // Form submitted successfully
         setSuccess(true);
       } else {
-        const contentType = response.headers.get("Content-Type");
-        if (contentType && contentType.includes("application/json")) {
-          const responseData = await response.json();
+        const contentType = response.headers['content-type'];
+        if (contentType && contentType.includes('application/json')) {
+          const responseData = response.data;
           setIsError(true);
           // Handle JSON errors and display them to the user
-          console.error("Error response from server:", responseData);
+          console.error('Error response from server:', responseData);
         } else {
           // Handle non-JSON responses (e.g., plain text or HTML)
           setIsError(true);
-          console.error("Unexpected response type:", contentType);
+          console.error('Unexpected response type:', contentType);
         }
       }
     } catch (error) {
       setIsError(true);
-      console.error("Error submitting form:", error);
+      console.error('Error submitting form:', error);
     } finally {
       setIsLoading(false); // Hide loader after submission
     }
   };
+  
   
 
   console.log("success status",success)
