@@ -22,12 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } catch (error) {
       if (error) {
         const validationErrors = {};
-        // error.inner.forEach((err) => {
-        //   validationErrors[err.path] = err.message;
-        // });
-
-        // console.log("error", error) 
-        // console.log("error", error) 
+   
         return res.status(400).json(error);
       } else {
         // Handle other errors
