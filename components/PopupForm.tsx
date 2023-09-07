@@ -12,13 +12,14 @@ type FormValues = {
 };
 
 const PopupForm = () => {
-  const [success, setSuccess] = useState(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setIsError] = useState(false);
+  const [error, setIsError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -35,6 +36,7 @@ const PopupForm = () => {
       if (response.status === 200) {
         // Form submitted successfully
         setSuccess("success");
+        // reset()
       } else {
         const responseData = await response.json();
         setIsError("please try again");
