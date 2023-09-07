@@ -1,7 +1,8 @@
-"use client"
+"use client";
 // components/PopupForm.tsx
 
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useState, useEffect } from "react";
 
 type FormValues = {
   name: string;
@@ -11,6 +12,9 @@ type FormValues = {
 };
 
 const PopupForm = () => {
+  const [success, setSuccess] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setIsError] = useState(false);
   const {
     register,
     handleSubmit,
@@ -19,41 +23,58 @@ const PopupForm = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      const response = await fetch('/api/submitForm', {
-        method: 'POST',
+      setIsLoading(true);
+      const response = await fetch("/api/submitForm", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
       if (response.status === 200) {
         // Form submitted successfully
-        // Handle success behavior (e.g., close the popup)
+        setSuccess("success");
       } else {
         const responseData = await response.json();
+        setIsError("please try again");
         // Handle errors and display them to the user
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsLoading(false); // Hide loader after submission
     }
   };
 
+  useEffect(() => {
+    if (success === "success") {
+      const timeout = setTimeout(() => {
+        setSuccess(null);
+      }, 4000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [success]);
+
   return (
     <div className="bg-white">
-      
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col justify-between min-h-386"
+      >
         <div className="mb-2">
-          <label htmlFor="name" className="block  font-light mb-1 text-black">
+      
+          <label htmlFor="name" className="block font-light mb-1 text-black">
             Name
           </label>
           <input
             type="text"
             id="name"
-            {...register('name', { required: true })}
+            {...register("name", { required: true })}
             placeholder="Enter your name"
             className={`w-full border rounded-md p-2 text-black bg-slate-100 ${
-              errors.name ? 'border-red-500' : 'border-gray-300'
+              errors.name ? "border-red-500" : "border-gray-300"
             }`}
           />
           {errors.name && (
@@ -67,55 +88,82 @@ const PopupForm = () => {
           <input
             type="email"
             id="email"
-            {...register('email', { required: true })}
+            {...register("email", {
+              required: true,
+              pattern: {
+                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/i,
+                message: "invalid email address",
+              },
+            })}
             placeholder="Enter your email"
             className={`w-full border rounded-md p-2 text-black  bg-slate-100 ${
-              errors.email ? 'border-red-500' : 'border-gray-300'
+              errors.email ? "border-red-500" : "border-gray-300"
             }`}
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm">Email is required</p>
+          {errors.email?.message ? (
+            <p className="text-red-500 text-sm">{errors.email?.message}</p>
+          ) : (
+            errors.email && (
+              <p className="text-red-500 text-sm">Email is required</p>
+            )
           )}
         </div>
         <div className="mb-2">
-          <label htmlFor="phoneNumber" className="block font-light  mb-1 text-black">
+          <label
+            htmlFor="phoneNumber"
+            className="block font-light  mb-1 text-black"
+          >
             Phone Number
           </label>
           <input
             type="tel"
             id="phoneNumber"
-            {...register('phoneNumber', { required: true })}
+            {...register("phoneNumber", { required: true , pattern: {
+              value: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g,
+              message: "invalid email address",
+            },})}
             placeholder="Enter your phone number"
             className={`w-full border rounded-md p-2 text-black bg-slate-100 ${
-              errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+              errors.phoneNumber ? "border-red-500" : "border-gray-300"
             }`}
           />
           {errors.phoneNumber && (
-            <p className="text-red-500 text-sm">Phone number is required</p>
+            <p className="text-red-500 text-sm">a valid phone number is required</p>
           )}
         </div>
         <div className="mb-2">
-          {/* <label htmlFor="consent" className="block font-semibold mb-1">
-            Notice and Consent
-          </label> */}
           <input
             type="checkbox"
             id="consent"
-            {...register('consent', { required: true })}
+            {...register("consent", { required: true })}
             className={`mr-2 ${
-              errors.consent ? 'border-red-500' : 'border-gray-300'
+              errors.consent ? "border-red-500" : "border-gray-300"
             }`}
           />
-          <span className='text-black text-sm'>I agree to the terms and conditions.</span>
+          <span className="text-black text-sm">
+            I agree to the terms and conditions.
+          </span>
           {errors.consent && (
-            <p className="text-red-500 text-sm">Consent is required</p>
+            <p className="text-red-500 text-sm">please agree T&C</p>
           )}
         </div>
+        {error ? (
+            <p className="text-red-500 text-sm">Please try again</p>
+          ) : null}
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4  rounded-md hover:bg-blue-600 w-full"
+          className="bg-blue-500 text-white py-2 px-4  rounded-md hover:bg-blue-600 w-full flex justify-center items-center"
+          disabled={isLoading}
         >
-          Submit
+          {success === "success"
+            ? <><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="27" height="27" viewBox="0 0 48 48">
+            <path fill="#c8e6c9" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path><path fill="#4caf50" d="M34.586,14.586l-13.57,13.586l-5.602-5.586l-2.828,2.828l8.434,8.414l16.395-16.414L34.586,14.586z"></path>
+            </svg> Submitted</>
+            : isLoading
+            ?  <svg height="24" width="24" className="loader loader-1"
+            ><g className="cir"><path d="m 12 5 a 1 1 0 0 0 0 15 a 1 1 0 0 0 0 -15" stroke="#0286FF" strokeWidth="2.5" fill="none" strokeLinecap="round"></path></g><g ><path d="m 14 5 c 0 0 4 0 5 5" stroke=" rgba(255, 255, 255, 0.9)" strokeWidth="2.5" fill="none" strokeLinecap="round"></path></g>
+            </svg>
+            : "Submit"}
         </button>
       </form>
     </div>

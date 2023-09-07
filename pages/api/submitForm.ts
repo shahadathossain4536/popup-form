@@ -2,25 +2,21 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import validationSchema from '../../validationSchema'; // Import your validation schema here
-import { dbConnect } from '../../mongoose'; // Import the Mongoose configuration
+import { dbConnect } from '../../lib/db'; // Import the Mongoose configuration
 import FormSubmit from '../../models/FormData'; // Import the Mongoose model
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     try {
       const { name, email, phoneNumber, consent } = req.body;
-      await dbConnect();
-      console.log(req.body, 'body-check') 
-
       const formData = new FormSubmit({
         name,
         email,
         phoneNumber,
         consent,
       });
-      console.log("formData", formData);
+      await dbConnect();
       await formData.save();
-
 
       res.status(200).json({ message: 'Form submitted successfully' });
     } catch (error) {
@@ -31,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // });
 
         console.log("error", error)
-        return res.status(400).json(validationErrors);
+        return res.status(400).json(error);
       } else {
         // Handle other errors
         console.error('Error submitting form:', error);

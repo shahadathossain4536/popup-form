@@ -13,8 +13,13 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      minHeight: {
+        'screen ': '100vh',
+        '386': '386px',
+      },
     },
   },
   plugins: [],
 }
+
 export default config
