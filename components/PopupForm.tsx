@@ -33,7 +33,7 @@ const PopupForm = () => {
         body: JSON.stringify(data),
       });
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         // Form submitted successfully
         setSuccess(true);
   
@@ -164,9 +164,8 @@ const PopupForm = () => {
             <path fill="#c8e6c9" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path><path fill="#4caf50" d="M34.586,14.586l-13.57,13.586l-5.602-5.586l-2.828,2.828l8.434,8.414l16.395-16.414L34.586,14.586z"></path>
             </svg> Submitted</>
             : isLoading
-            ?  <svg height="24" width="24" className="loader loader-1"
-            ><g className="cir"><path d="m 12 5 a 1 1 0 0 0 0 15 a 1 1 0 0 0 0 -15" stroke="#0286FF" strokeWidth="2.5" fill="none" strokeLinecap="round"></path></g><g ><path d="m 14 5 c 0 0 4 0 5 5" stroke=" rgba(255, 255, 255, 0.9)" strokeWidth="2.5" fill="none" strokeLinecap="round"></path></g>
-            </svg>
+            ?     <div className="w-6 h-6 rounded-full animate-spin
+            border-2 border-solid border-yellow-500 border-t-transparent"></div>
             : "Submit"}
         </button>
         {success && <p>Form submitted successfully</p>}
