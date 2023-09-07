@@ -12,9 +12,9 @@ type FormValues = {
 };
 
 const PopupForm = () => {
-  const [success, setSuccess] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setIsError] = useState<string | null>(null);
+  const [error, setIsError] = useState(false);
   const {
     register,
     handleSubmit,
@@ -35,11 +35,11 @@ const PopupForm = () => {
 
       if (response.status === 200) {
         // Form submitted successfully
-        setSuccess("success");
+        setSuccess(true);
         // reset()
       } else {
         const responseData = await response.json();
-        setIsError("please try again");
+        setIsError(true);
         // Handle errors and display them to the user
       }
     } catch (error) {
@@ -50,9 +50,9 @@ const PopupForm = () => {
   };
 
   useEffect(() => {
-    if (success === "success") {
+    if (success) {
       const timeout = setTimeout(() => {
-        setSuccess(null);
+        setSuccess(false);
       }, 4000);
 
       return () => clearTimeout(timeout);
@@ -157,7 +157,7 @@ const PopupForm = () => {
           className="bg-blue-500 text-white py-2 px-4  rounded-md hover:bg-blue-600 w-full flex justify-center items-center"
           disabled={isLoading}
         >
-          {success === "success"
+          {success
             ? <><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="27" height="27" viewBox="0 0 48 48">
             <path fill="#c8e6c9" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path><path fill="#4caf50" d="M34.586,14.586l-13.57,13.586l-5.602-5.586l-2.828,2.828l8.434,8.414l16.395-16.414L34.586,14.586z"></path>
             </svg> Submitted</>
