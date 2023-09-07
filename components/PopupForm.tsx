@@ -32,22 +32,31 @@ const PopupForm = () => {
         },
         body: JSON.stringify(data),
       });
-
-      if (response.status == 200) {
+  
+      if (response.status === 200) {
         // Form submitted successfully
         setSuccess(true);
-  
       } else {
-        const responseData = await response.json();
-        setIsError(true);
-        // Handle errors and display them to the user
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+          const responseData = await response.json();
+          setIsError(true);
+          // Handle JSON errors and display them to the user
+          console.error("Error response from server:", responseData);
+        } else {
+          // Handle non-JSON responses (e.g., plain text or HTML)
+          setIsError(true);
+          console.error("Unexpected response type:", contentType);
+        }
       }
     } catch (error) {
+      setIsError(true);
       console.error("Error submitting form:", error);
     } finally {
       setIsLoading(false); // Hide loader after submission
     }
   };
+  
 
   console.log("success status",success)
 
