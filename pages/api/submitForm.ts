@@ -1,7 +1,7 @@
-// pages/api/submitForm.js
+
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import validationSchema from '../../validationSchema'; // Import your validation schema here
+
 import { dbConnect } from '../../lib/db'; // Import the Mongoose configuration
 import FormSubmit from '../../models/FormData'; // Import the Mongoose model
 

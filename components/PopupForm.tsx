@@ -36,7 +36,7 @@ const PopupForm = () => {
       if (response.status === 200) {
         // Form submitted successfully
         setSuccess(true);
-        // reset()
+  
       } else {
         const responseData = await response.json();
         setIsError(true);
@@ -48,6 +48,8 @@ const PopupForm = () => {
       setIsLoading(false); // Hide loader after submission
     }
   };
+
+  
 
   useEffect(() => {
     if (success) {
@@ -167,6 +169,7 @@ const PopupForm = () => {
             </svg>
             : "Submit"}
         </button>
+        {success && <p>Form submitted successfully</p>}
       </form>
     </div>
   );
