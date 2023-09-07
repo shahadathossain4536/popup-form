@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const { name, email, phoneNumber, consent } = req.body;
       await dbConnect();
-      console.log(req.body, 'body-check')
+      console.log(req.body, 'body-check') 
 
       const formData = new FormSubmit({
         name,
